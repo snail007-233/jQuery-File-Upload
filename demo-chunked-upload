@@ -35,6 +35,9 @@
 					}
 				}).on('fileuploadchunkdone', function(e, data) {
 					Cookies.set('uploadedBytes-' + getDataVideoId(data), data.uploadedBytes);
+				}).on('fileuploadprogress', function(e, data) {
+					var progress = parseInt(data.loaded / data.total * 100, 10);
+					console.log(progress+"%");
 				}).bind('fileuploaddone', function(e, data) {
 					Cookies.remove('uploadedBytes-' + getDataVideoId(data));
 				});
