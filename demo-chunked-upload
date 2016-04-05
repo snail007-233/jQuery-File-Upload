@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>jQuery File Upload Example</title>
+	</head>
+	<body>
+		<input id="fileupload" type="file" name="video" data-url="http://gvs.dev.gomeplus.com/upload">
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.ui.widget.js"></script>
+		<script src="js/jquery.iframe-transport.js"></script>
+		<script src="js/jquery.fileupload.js"></script>
+		<script src="js/js.cookie.js"></script>
+		<script>
+			$(function() {
+				function getVideoId() {
+					return '888';
+				}
+				function getDataVideoId(data) {
+					return '888';
+				}
+				$('#fileupload').fileupload({
+					multipart: false,
+					maxChunkSize: 50000,
+					maxRetries: 100,
+					retryTimeout: 500,
+				}).bind('fileuploadadd', function(e, data) {
+					var videoId = getVideoId();
+					//headers数据一定要是强制字符串里类型，不然无效
+					data.headers = {"Session-ID": videoId, "Video-ID": videoId};
+					//data.uploadedBytes一定要是强制int类型，不然无效
+					var uploadedBytes = parseInt(Cookies.get('uploadedBytes-' + getDataVideoId(data))) || 0;
+					if (uploadedBytes > 0) {
+						//断点续传，设置上传的位置
+						data.uploadedBytes = uploadedBytes;
+						$.blueimp.fileupload.prototype.options.add.call(this, e, data);
+					}
+				}).on('fileuploadchunkdone', function(e, data) {
+					Cookies.set('uploadedBytes-' + getDataVideoId(data), data.uploadedBytes);
+				}).bind('fileuploaddone', function(e, data) {
+					Cookies.remove('uploadedBytes-' + getDataVideoId(data));
+				});
+			});
+		</script>
+	</body> 
+</html>
