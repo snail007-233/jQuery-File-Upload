@@ -22,8 +22,6 @@
 				$('#fileupload').fileupload({
 					multipart: false,
 					maxChunkSize: 50000,
-					maxRetries: 100,
-					retryTimeout: 500,
 				}).bind('fileuploadadd', function(e, data) {
 					var videoId = getVideoId();
 					//headers数据一定要是强制字符串里类型，不然无效
