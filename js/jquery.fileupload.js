@@ -452,7 +452,7 @@
                 options.headers['Content-Range'] = options.contentRange;
             }
             if (!multipart || options.blob || !this._isInstanceOf('File', file)) {
-                options.headers['Content-Disposition'] = 'attachment; filename="' +
+                options.headers['Content-Disposition'] = 'attachment; name="'+paramName+'"; filename="' +
                     encodeURI(file.name) + '"';
             }
             if (!multipart) {
